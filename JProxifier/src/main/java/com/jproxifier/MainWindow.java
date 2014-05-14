@@ -6,24 +6,76 @@
 
 package com.jproxifier;
 
+import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
+import java.util.Arrays;
+import java.util.List;
+import javax.swing.JFrame;
+import org.pushingpixels.flamingo.api.common.JCommandButton;
+import org.pushingpixels.flamingo.api.common.icon.ImageWrapperResizableIcon;
+import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
+import org.pushingpixels.flamingo.api.ribbon.JRibbonBand;
+import org.pushingpixels.flamingo.api.ribbon.JRibbonFrame;
+import static org.pushingpixels.flamingo.api.ribbon.RibbonElementPriority.MEDIUM;
+import static org.pushingpixels.flamingo.api.ribbon.RibbonElementPriority.TOP;
+import org.pushingpixels.flamingo.api.ribbon.RibbonTask;
+import org.pushingpixels.flamingo.api.ribbon.resize.IconRibbonBandResizePolicy;
+
+
 /**
  *
  * @author azochniak
  */
-public class MainWindow extends javax.swing.JFrame {
+public class MainWindow extends JRibbonFrame {
 
     /**
      * Creates new form MainWindow
      */
     public MainWindow() {
-        initComponents();
-        setVisible(true);
-        setSize(400, 400);
+//        initComponents();
+//        setSize(400, 400); //use preffered size instead.
         setTitle("JProxifier by AZ & PS - PWr 2014");
-        setLocation(150, 150);
-        setPreferredSize(new java.awt.Dimension(310, 75));
-        setLocationRelativeTo(null); //Center window in both axises.
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+//        setLocationRelativeTo(null); //Center window in both axises.
+//        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        
+        Rectangle r = GraphicsEnvironment.getLocalGraphicsEnvironment()
+        .getMaximumWindowBounds();
+        setPreferredSize(new Dimension(r.width, r.height / 2));
+        setMinimumSize(new Dimension(r.width / 10, r.height / 2));
+        pack();
+        setLocation(r.x, r.y);
+        setVisible(true);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        initRibbon();
+    }
+    
+    public static ResizableIcon getResizableIconFromResource(String resource) {
+        return ImageWrapperResizableIcon.getIcon(MainWindow.class.getClassLoader().getResource(resource), new Dimension(48, 48));
+    }
+    public void initRibbon() {
+        
+        JRibbonBand band1 = new JRibbonBand("Hello", null);
+        JRibbonBand band2 = new JRibbonBand("world!", null);
+
+        band1.setResizePolicies((List) Arrays.asList(new IconRibbonBandResizePolicy(band1.getControlPanel())));
+        band2.setResizePolicies((List) Arrays.asList(new IconRibbonBandResizePolicy(band1.getControlPanel())));
+
+        RibbonTask task1 = new RibbonTask("One", band1);
+        RibbonTask task2 = new RibbonTask("Two", band2);
+        
+//        JCommandButton button1 = new JCommandButton("Square", getResizableIconFromResource("downloadall.ico"));
+//        JCommandButton button2 = new JCommandButton("Circle", getResizableIconFromResource("to"));
+//        JCommandButton button3 = new JCommandButton("Triangle", getResizableIconFromResource("the"));
+//        JCommandButton button4 = new JCommandButton("Star", getResizableIconFromResource("resource"));
+ 
+//        band1.addCommandButton(button1, TOP);
+//        band1.addCommandButton(button2, MEDIUM);
+//        band1.addCommandButton(button3, MEDIUM);
+//        band1.addCommandButton(button4, MEDIUM);
+        
+        getRibbon().addTask(task1);
+        getRibbon().addTask(task2);
     }
 
     /**
