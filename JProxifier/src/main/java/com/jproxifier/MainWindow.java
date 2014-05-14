@@ -6,12 +6,13 @@
 
 package com.jproxifier;
 
-import java.awt.Dimension;
-import java.awt.GraphicsEnvironment;
-import java.awt.Rectangle;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
-import javax.swing.JFrame;
+import javax.swing.*;
 import org.pushingpixels.flamingo.api.common.JCommandButton;
 import org.pushingpixels.flamingo.api.common.icon.ImageWrapperResizableIcon;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
@@ -27,13 +28,13 @@ import org.pushingpixels.flamingo.api.ribbon.resize.IconRibbonBandResizePolicy;
  *
  * @author azochniak
  */
-public class MainWindow extends JRibbonFrame {
+public class MainWindow extends JFrame /*JRibbonFrame*/ {
 
     /**
      * Creates new form MainWindow
      */
     public MainWindow() {
-//        initComponents();
+        initComponents();
 //        setSize(400, 400); //use preffered size instead.
         setTitle("JProxifier by AZ & PS - PWr 2014");
 //        setLocationRelativeTo(null); //Center window in both axises.
@@ -47,7 +48,32 @@ public class MainWindow extends JRibbonFrame {
         setLocation(r.x, r.y);
         setVisible(true);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        initRibbon();
+//        initRibbon();
+        initTabs();
+    }
+         
+    protected JComponent makeTextPanel(String text) {
+        JPanel panel = new JPanel(false);
+        JLabel filler = new JLabel(text);
+        filler.setHorizontalAlignment(JLabel.CENTER);
+        panel.setLayout(new GridLayout(1, 1));
+        panel.add(filler);
+        return panel;
+    }
+    public void initTabs() {
+        URL res = MainWindow.class.getResource("downloadall.gif");
+        
+        ImageIcon icon = resizeIcon(new ImageIcon(res), 48/2, 48/2);
+
+        JComponent panel1 = makeTextPanel("Panel #1");
+        JTabbedPane tabbedPane = jTabbedPane1;
+        
+        tabbedPane.addTab("Tab 1", icon, panel1, "Does nothing");
+        tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
+
+        JComponent panel2 = makeTextPanel("Panel #2");
+        tabbedPane.addTab("Tab 2", icon, panel2, "Does twice as much nothing");
+        tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
     }
     
     public static ResizableIcon getResizableIconFromResource(String resource) {
@@ -73,9 +99,8 @@ public class MainWindow extends JRibbonFrame {
 //        band1.addCommandButton(button2, MEDIUM);
 //        band1.addCommandButton(button3, MEDIUM);
 //        band1.addCommandButton(button4, MEDIUM);
-        
-        getRibbon().addTask(task1);
-        getRibbon().addTask(task2);
+//        getRibbon().addTask(task1);
+//        getRibbon().addTask(task2);
     }
 
     /**
@@ -87,17 +112,34 @@ public class MainWindow extends JRibbonFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jMenu1.setText("File");
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Edit");
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 135, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 212, Short.MAX_VALUE))
         );
 
         pack();
@@ -139,5 +181,18 @@ public class MainWindow extends JRibbonFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
+
+    private ImageIcon resizeIcon(ImageIcon imageIcon, int imageW, int imageH) {
+        Image img = imageIcon.getImage();  
+        BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);  
+        Graphics g = bi.createGraphics();  
+        g.drawImage(img, 10, 10, imageW, imageH, null, null);  
+        ImageIcon newIcon = new ImageIcon(bi);
+        return newIcon;
+    }
 }
