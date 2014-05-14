@@ -1,0 +1,16 @@
+# Created by http://www.gitignore.io
+
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+
+### by arzo ###
+build.xml
+nbproject/
+MANIFEST.MF
+application-client.xml
